@@ -46,6 +46,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp() {
+    // Hoisted state of counter
+    val counter = remember {
+        mutableStateOf(0)
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,45 +62,36 @@ fun MyApp() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                "$100", style = TextStyle(
+                "$${counter.value}", style = TextStyle(
                     color = Color.Red, fontSize = 30.sp, fontWeight = FontWeight.Bold
                 )
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            createCircle()
+            Spacer(modifier = Modifier.height(40.dp))
+            createCircle(counter.value) { newValue ->
+                counter.value = newValue
+            }
         }
-
     }
 }
 
-@Preview
+//@Preview
 @Composable
-fun createCircle() {
-    // remember api is being used to remember the state
-    // Here count is of int type
-    var count by remember {
-        mutableStateOf(0)
-    }
-
-    // Alternate way to use remember api
-    // here counter is of type MutableState<Int>
-    val counter = remember {
-        mutableStateOf(0)
-    }
+fun createCircle(
+    counter: Int = 0,
+    updateCount: (Int) -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(all = 3.dp)
             .size(55.dp)
             .clickable {
-                count++
-                counter.value += 1
-                Log.d(TAG, "Count is $count")
+                updateCount(counter + 1)
             },
         shape = CircleShape,
         elevation = 4.dp
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Text(text = "Tap ${counter.value}")
+            Text(text = "Tap")
         }
     }
 
