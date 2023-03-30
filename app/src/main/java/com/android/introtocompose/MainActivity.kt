@@ -49,8 +49,7 @@ fun MyApp() {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
-        color = MaterialTheme.colors.primary
+            .fillMaxHeight(), color = MaterialTheme.colors.primary
     ) {
 
         Column(
@@ -58,11 +57,8 @@ fun MyApp() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                "$100",
-                style = TextStyle(
-                    color = Color.Red,
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold
+                "$100", style = TextStyle(
+                    color = Color.Red, fontSize = 30.sp, fontWeight = FontWeight.Bold
                 )
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -75,22 +71,31 @@ fun MyApp() {
 @Preview
 @Composable
 fun createCircle() {
+    // remember api is being used to remember the state
+    // Here count is of int type
     var count by remember {
+        mutableStateOf(0)
+    }
+
+    // Alternate way to use remember api
+    // here counter is of type MutableState<Int>
+    val counter = remember {
         mutableStateOf(0)
     }
     Card(
         modifier = Modifier
             .padding(all = 3.dp)
-            .size(45.dp)
+            .size(55.dp)
             .clickable {
                 count++
+                counter.value += 1
                 Log.d(TAG, "Count is $count")
             },
         shape = CircleShape,
         elevation = 4.dp
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Text(text = "Tap $count")
+            Text(text = "Tap ${counter.value}")
         }
     }
 
